@@ -19,3 +19,9 @@ th {
   border: 1px solid black;
   padding: 1rem;
 }
+
+#mapid {
+  height: 300px;
+  margin-bottom: 2rem;
+  border: 1px solid black;
+}

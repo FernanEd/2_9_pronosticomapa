@@ -13,16 +13,23 @@ const getDate = (milseconds) =>
 
 const toCapitalize = (string) => string[0].toUpperCase() + string.slice(1);
 
-let request = new XMLHttpRequest();
-request.open(
-  "GET",
-  `https://api.openweathermap.org/data/2.5/onecall?lat=${tampico.lat}&lon=${tampico.lon}&exclude=hourly,minutely,alerts&appid=${API_KEY}&lang=sp`
-);
-request.responseType = "json";
-request.send();
+// API
 
-request.onload = () => {
-  populateContent(request.response.daily);
+const getWeather = (lat, lon) => {
+  isLoading = true;
+  const request = new XMLHttpRequest();
+  request.open(
+    "GET",
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${API_KEY}&lang=sp`
+  );
+  request.responseType = "json";
+  request.send();
+
+  request.onload = () => {
+    populateContent(request.response.daily);
+    $("table").show();
+    $("#loading").hide();
+  };
 };
 const populateContent = (data) => {
   $("#pronostico-table").html(
@@ -40,3 +47,34 @@ const populateContent = (data) => {
       .join("")
   );
 };
+
+// MAPA
+
+const mymap = L.map("mapid").setView([tampico.lat, tampico.lon], 13);
+
+L.tileLayer(
+  "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+  {
+    attribution:
+      'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: "mapbox/streets-v11",
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken:
+      "pk.eyJ1Ijoiam9zZXJtZXIxMjMiLCJhIjoiY2tuZmVhOXQ4MDh6dDJ1bzQyaDhwbDk0eiJ9.Ls7pmGEsdZ64UDIW6ukPBw",
+  }
+).addTo(mymap);
+
+mymap.on("click", (e) => {
+  const { lat, lng } = e.latlng;
+  getWeather(lat, lng);
+  $("#coords").html(
+    `${Math.floor(lat * 10) / 10} ${Math.floor(lng * 10) / 10}`
+  );
+  $("table").hide();
+  $("#loading").show();
+});
+
+$("table").hide();
+$("#loading").hide();

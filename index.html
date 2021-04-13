@@ -5,11 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
     <title>Pronostico del tiempo</title>
   </head>
   <body>
     <main>
       <h1>Pronostico del tiempo</h1>
+      <p>Coordenadas</p>
+      <p id="coords"></p>
+      <div id="mapid"></div>
       <table>
         <thead>
           <th>Fecha</th>
@@ -20,7 +34,7 @@
         </thead>
         <tbody id="pronostico-table"></tbody>
       </table>
-      <section id="pronostico-wrapper"></section>
+      <div id="loading">Cargando...</div>
     </main>
     <script
       src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
